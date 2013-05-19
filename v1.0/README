@@ -1,0 +1,51 @@
+Braincraft is a platform for experimentation with neuroevolution. It is heavily inspired by NEAT and includes an implementation of the original algorithm. The NEAT algorithm evolves neural networks with a genetic algorithm to find a solution network to a given problem.
+
+==== PARAMETERS ====
+
+If a range is specified it must be abided by to avoid abnormal behavior or exceptions.
+
+POPULATION CONSTRUCTION PARAMETERS:
+  populationSize: Number of networks that interact within a generation. RANGE: [1, inf)
+  numInputs: Number of input nodes for each network in the population. RANGE: [1, inf)
+  numOutputs: Number of output nodes for each network in the population. RANGE: [1, inf)
+
+TRIBEPOPULATION (NEAT) PARAMETERS:
+	c1-c3: Parameters of the function that determines a DNA's Tribe
+	tribeCompatibilityThreshold: Threshold value for determining Tribe compatibility
+	percentageOfTribeToKillBeforeReproduction: Kills this percentage of Tribe before giving anyone chance to reproduce. RANGE: [0, 1)
+	
+ALL POPULATION TYPES PARAMETERS:
+	sigmoidCoefficient: slope coefficient for the sigmoid function that calculates output levels at each node in a neural network
+	weightMutationRate: Chance of a neural net receiving a network weight mutation. RANGE: [0, 1]
+	perWeightMutationRate: Chance that an individual weight will be mutated in a network weight mutation. RANGE: [0, 1]
+	linkMutationRate: Chance of a neural net having a connection added. RANGE: [0, 1]
+	nodeMutationRate: Chance of a neural net having a node added. RANGE: [0, 1]
+	linkDisableRate: Chance of a neural net having a connection disabled (primative pruning). RANGE: [0, 1]
+	disabledRate: Chance that a gene will be disabled in the offspring given that one of the parents has that gene disabled. RANGE: [0, 1]
+	inheritFromHigherFitRate: Chance that offspring will inherit a given gene from the parent with higher fitness. RANGE: [0, 1]
+
+==== EXAMPLES ====
+
+AND.java
+	braincraft experiment to produce neural networks that approximate an AND gate
+	verbosely commented to explain all library calls
+	verbosely coded to show how to set all parameters of the library
+	
+XOR.java is a greatly shortened example of an equivalent experiment to produce XOR networks
+	braincraft experiment to produce neural networks that approximate an XOR gate
+	minimally commented/coded to demonstrate the ease/simplicity of setting up a braincraft experiment
+
+==== VISUALIZER ====
+
+If you read AND.java there are comments which tell you how to create a Braincraft stats log file or save brains as text files.
+
+These files can be visualized using the python visualization script included with the library.  Call it from the command line as follows:
+
+python visualize.py LOG_FILE_OR_SAVED_BRAIN_PATH
+
+Ex: python visualize.py ./stats.txt
+
+==== AUTHOR ====
+
+Christopher Donahue
+2011-2012

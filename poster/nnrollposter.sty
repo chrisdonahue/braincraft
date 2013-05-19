@@ -1,0 +1,416 @@
+% nnrollposter.sty
+%
+% April 3, 2003, Bobby D. Bryant, UT Austin, CS ``NN'' Research Group.
+%
+% Last update: $Revision: 1.9 $ $Date: 2004/02/18 20:37:29 $ $Author: jbednar $
+%
+% Based indirectly on the rollposter.sty from Uni Florida,
+% http://www.phys.ufl.edu/~pjh/posters/poster_howto.html, via Tal Tversky,
+% James Bednar, and probably some others I don't know about.
+%
+% Problems / todo / wishlist:
+%
+%  o Need better example file.
+%     - Keep one simple one, so that the poster markups will be easy to find.
+%  o Works with pdflatex; PostScript support will need more hacking.
+%     - do we even need PostScript support anymore?
+%  o latexspell does not seem to catch everything.
+%  o Floats are not supported.
+%     - need a pseudo-float environments for figs and tables, with numbering
+%       and captions.
+%  o (?)Support color frames/backgrounds for posterboxes.
+%     - Watchout - The printer owner doesn't like printing backgrounds!  Turn
+%       shading *off* by default.
+%  o (?)Support seal or other logo in title box.
+%     - parameterize it, for the benefit of those who don't want it.
+
+\usepackage{multicol}          % For layout engine.
+\usepackage{palatino}
+\usepackage[latin1]{inputenc}
+\usepackage{graphicx,color}
+\usepackage{hyperref}          % This is necessary for making the papersize work
+\hypersetup{pdfpagemode=empty} % Make Acrobat pop it up w/o thumbnails/bookmarks
+\usepackage{natbib}            % Bibliography and citation package.
+\usepackage{calc}              % Needed for divisions layout calculations.
+
+%===============================================================================
+% Basic setup:
+%
+\pagestyle{empty}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+\setlength{\footskip}{0mm}
+\setlength{\marginparsep}{0mm}
+\setlength{\marginparwidth}{0mm}
+
+%% logos
+%% Use renewcommand on \lefttitle to change if desired
+%%\newcommand{\lefttitle}{\hfill\parbox[c]{30 mm}{\centering\seal\char0}} % UT seal on left
+\newcommand{\lefttitle}{\hfill\parbox[c]{50 mm}{\centering\includegraphics[height=25mm]{images/UT/ut-words}}} % UT logo on the right
+\newcommand{\righttitle}{\hfill\parbox[c]{50 mm}{\centering\includegraphics[width=40mm]{images/FRI/fri_ut_color.pdf}}} % FRI logo on right
+
+%===============================================================================
+% Utility boxes:
+%
+\newsavebox{\dummybox}
+\newlength{\whiteboxrule}\setlength{\whiteboxrule}{0.5ex}
+\newlength{\whiteboxsep}\setlength{\whiteboxsep}{2ex}
+% Boxes with drop shadows:
+%  - Use a psshadowbox for LaTeX, or a colorbox for PDFLaTeX.
+\ifx\pdfoutput\undefined%
+   \newcommand{\whitebox}[2][0em]{\psshadowbox[framesep=1em]{#2}}%
+\else%
+   \newcommand{\whitebox}[2][0em]%      Outlined box.
+      {\setlength{\fboxrule}{\whiteboxrule}%
+       \setlength{\fboxsep}{\whiteboxsep}%
+       \fcolorbox{black}{white}{\makebox{#2}}%
+      }%
+   \newcommand{\lightwhitebox}[2][0em]% Thinner border and narrower margin.
+      {\setlength{\fboxrule}{0.5\whiteboxrule}%
+       \setlength{\fboxsep}{0.7\whiteboxsep}%
+       \fcolorbox{black}{white}{\makebox{#2}}%
+      }%
+\fi%
+
+
+%===============================================================================
+% Environments:
+%-------------------------------------------------------------------------------
+% Title box:
+%
+% Space taken by \lefttitle and \righttitle is ignored, so it's up to
+% the user to make sure it won't overlap with the stuff in the title itself.
+\newlength{\titleboxwidth}%
+\newlength{\undertitleskip}%
+\newenvironment{postertitle}%
+   % pre...
+   {%
+    \begin{lrbox}{\dummybox}%
+       \setlength{\titleboxwidth}{\textwidth}%
+       \addtolength{\titleboxwidth}{-2\whiteboxrule}%
+       \addtolength{\titleboxwidth}{-2\whiteboxsep}%
+       \makebox[0in][l]{\lefttitle}\hfill%
+       \begin{minipage}{\titleboxwidth}%
+          \begin{center}%
+   }%
+   % ...post...
+   {%
+          \end{center}%
+       \end{minipage}%
+       \hfill\makebox[0in][r]{\righttitle}%
+    \end{lrbox}%
+    \noindent\whitebox{\usebox{\dummybox}}%
+    \vspace*{-\baselineskip}\vspace{\undertitleskip}%
+   }%
+%-------------------------------------------------------------------------------
+% Pack your content here:
+\newenvironment{posterbody}%
+   % pre...
+   {%
+    \begin{multicols}{\postercolumncount}%
+   }%
+   % ...post...
+   {%
+    \end{multicols}%
+   }%
+%-------------------------------------------------------------------------------
+% Boxes for grouping your content:
+\newlength{\posterboxwidth}%
+\newlength{\underposterbox}%
+\newenvironment{posterbox}
+   % pre...
+   {%
+    \begin{lrbox}{\dummybox}%
+       \setlength{\posterboxwidth}{\linewidth}% \linewidth is from multicol
+       \addtolength{\posterboxwidth}{-2\whiteboxrule}%
+       \addtolength{\posterboxwidth}{-2\whiteboxsep}%
+       \begin{minipage}{\posterboxwidth}%
+   }%
+   % ...post...
+   {%
+       \end{minipage}%
+    \end{lrbox}%
+    \noindent\whitebox{\usebox{\dummybox}}%
+    \vspace{\underposterbox}%
+   }%
+%-------------------------------------------------------------------------------
+%% You can use "slide" instead of "posterbox" to make it simpler
+%% to share text between slides and posters.
+\newenvironment{slide} {\begin{posterbox}} {\end{posterbox}}
+%-------------------------------------------------------------------------------
+% Easy way to split a box when you're trying to crowd everything in:
+\newcommand{\posterboxbreak}%
+   {% Terminate the current box environment...
+       \end{minipage}%
+    \end{lrbox}%
+    \noindent\whitebox{\usebox{\dummybox}}%
+    \vspace{\underposterbox}%
+    \\% ...and start a new one...
+    \begin{lrbox}{\dummybox}%
+       \setlength{\posterboxwidth}{\linewidth}% \linewidth is from multicol
+       \addtolength{\posterboxwidth}{-2\whiteboxrule}%
+       \addtolength{\posterboxwidth}{-2\whiteboxsep}%
+       \begin{minipage}{\posterboxwidth}%
+   }%
+%-------------------------------------------------------------------------------
+% Colorized/squeezed section titles:
+\newlength{\postersectionpresqueeze}%
+\newlength{\postersectionpostsqueeze}%
+\newcommand{\postersection}[1]%
+   {% \Large is to force the current typeface to the heading size.
+    {\Large\vspace*{\postersectionpresqueeze}}%
+    \section*{\color{\postersectioncolorval}\underline{#1}}%
+    {\Large\vspace*{\postersectionpostsqueeze}}%
+   }%
+%-------------------------------------------------------------------------------
+% Ditto, but with ``continued'' in smaller type:
+\newcommand{\postersectioncontinuation}[1]%
+   {% \Large is to force the current typeface to the heading size.
+    {\Large\vspace*{\postersectionpresqueeze}}%
+    \section*{\color{\postersectioncolorval}%
+              \underline{#1} {\small (continued)}%
+             }%
+    {\Large\vspace*{\postersectionpostsqueeze}}%
+    % Undo the following sub-section pre-squeeze:
+    {\large\vspace*{-\postersubsectionpresqueeze}}%
+   }%
+%-------------------------------------------------------------------------------
+% Colorized/squeezed subsection titles:
+\newlength{\postersubsectionpresqueeze}%
+\newlength{\postersubsectionpostsqueeze}%
+\newcommand{\postersubsection}[1]%
+   {% \large is to force the current typeface to the heading size.
+    {\large\vspace*{\postersubsectionpresqueeze}}%
+    \subsection*{\color{\postersubsectioncolorval}\underline{#1}}%
+    {\large\vspace*{\postersubsectionpostsqueeze}}%
+   }%
+
+
+%===============================================================================
+% Special environments:
+%-------------------------------------------------------------------------------
+% Easy abstract:
+\newenvironment{posterabstract}%
+   % pre...
+   {%
+    \begin{posterbox}%
+       % \Large is to force the current typeface to the heading size.
+       {\Large\vspace*{\postersectionpresqueeze}}%
+       \section*{\centering\color{\postersectioncolorval}\underline{Abstract}}%
+       {\Large\vspace*{\postersectionpostsqueeze}}%
+       \color{\posterabstractcolorval}%
+   }%
+   % ...post...
+   {%
+       \color{black}%
+    \end{posterbox}
+   }%
+%-------------------------------------------------------------------------------
+% Easy acknowledgements:
+\newenvironment{posteracknowledgements}%
+   % pre...
+   {%
+    \begin{posterbox}%
+       % \Large is to force the current typeface to the heading size.
+       {\Large\vspace*{\postersectionpresqueeze}}%
+       \section*{Acknowledgements}%
+       {\Large\vspace*{\postersectionpostsqueeze}}%
+       \footnotesize%
+   }%
+   % ...post...
+   {%
+       \normalsize%
+    \end{posterbox}%
+   }%
+%-------------------------------------------------------------------------------
+% Easy bibliography:
+%  o arg#1 is the style file to use.
+%  o arg#2 is the .bib file(s) to use. (Use a comma-separated list for several.)
+\newcommand{\posterbibliography}[2]%
+   {%
+    \begin{posterbox}%
+       \bibliographystyle{#1}%
+       \footnotesize{\bibliography{#2}}%
+    \end{posterbox}%
+   }%
+
+
+%===============================================================================
+% Layout tweaks:
+%
+%-------------------------------------------------------------------------------
+% The poster is actually typeset 1/3 to 1/2 the intended size, and scaled up
+% during printing.  This makes the typefaces a suitable size for reading on a
+% poster.  The packge user uses these commands to specify the intended print
+% size of the poster and the desired scaling factor, and the commands set the
+% LaTeX papersize to the intended size divided by the scale factor.
+% Notice that the scale factor can be used to virtually ``stretch'' the poster
+% to let you crowd more material in without changing the size of the printout.
+% For example, if you design your poster with a scale factor of 2.5 and then
+% discover that you need just a bit more room for your material, you can change
+% your scale factor to (say) 2.45 and regenerate your document.
+%-------------------------------------------------------------------------------
+% Define the width that the poster will be printed, and derive the scaled
+% typesetting width from it:
+\newlength{\posterprintwidthval}%
+\setlength{\posterprintwidthval}{40in}% For 40'' x 30'' posterboard.
+\newcommand{\posterprintwidth}[1]%
+   {% Save the value:
+    \setlength{\posterprintwidthval}{#1}%
+    % Calculate the papersize:
+    \setlength{\paperwidth}{#1 / \real{\posterprintscalefactorval}}%
+    \special{papersize=\paperwidth,\paperheight}%
+    % And reset the text widths:
+    \postermargins{\postermarginsval}%
+   }%
+%-------------------------------------------------------------------------------
+% Define the height that the poster will be printed, and derive the scaled
+% typesetting height from it:
+\newlength{\posterprintheightval}%
+\setlength{\posterprintheightval}{30in}% For 40'' x 30'' posterboard.
+\newcommand{\posterprintheight}[1]%
+   {% Save the value:
+    \setlength{\posterprintheightval}{#1}%
+    % Calculate the papersize:
+    \setlength{\paperheight}{#1 / \real{\posterprintscalefactorval}}%
+    \special{papersize=\paperwidth,\paperheight}%
+    % And reset the text widths:
+    \postermargins{\postermarginsval}%
+   }%
+%-------------------------------------------------------------------------------
+% Define the scale factor:
+\def\posterprintscalefactorval{2.5}% N.B. -- Not a TeX ``length''.
+\newcommand{\posterprintscalefactor}[1]%
+   {% Save the value:
+    \def\posterprintscalefactorval{#1}%
+    % Recalculate the paper size:
+    \posterprintwidth{\posterprintwidthval}%
+    \posterprintheight{\posterprintheightval}%
+    % And reset the text widths:
+    \postermargins{\postermarginsval}%
+   }%
+%-------------------------------------------------------------------------------
+% N.B. -- The lengths sent to any of the commands below will be used for the
+%         *typesetting* lengths, not the scaled printout lengths.  So if you
+%         as for a 1'' margin and a 2.0x scale factor, you will actually get
+%         a 2'' margin on the printout.  But the key thing is to make them
+%         look right in your viewer before you print: if the layout looks good
+%         at that scale, it will look good on the printout too.
+%-------------------------------------------------------------------------------
+% Set margin all around to a specified size:
+\newlength{\postermarginsval}%
+\setlength{\postermarginsval}{0.75in}% Pre-scaling value!
+\newcommand{\postermargins}[1]%
+   {% Save the value:
+    \setlength{\postermarginsval}{#1}%
+    % Set the margins::
+    \setlength{\topmargin}{#1}%
+    \addtolength{\topmargin}{-1.0in}%     Correct for the default 1'' offset.
+    \setlength{\oddsidemargin}{#1}%
+    \addtolength{\oddsidemargin}{-1.0in}% Correct for the default 1'' offset.
+    % Set the text width and height:
+    \setlength{\textwidth}{\paperwidth}%
+    \addtolength{\textwidth}{-2\postermarginsval}%  deduct margins.
+    \setlength{\textheight}{\paperheight}%
+    \addtolength{\textheight}{-2\postermarginsval}% deduct margins.
+   }%
+%-------------------------------------------------------------------------------
+% Customize the vertical gap between the posterboxes in a column:
+\newcommand{\postertitlesep}[1]%
+   {\setlength{\undertitleskip}{#1}}%
+%-------------------------------------------------------------------------------
+% Set the number of columns in the posterbody:
+\newcommand{\postercolumns}[1]%
+   {\def\postercolumncount{#1}}%
+%-------------------------------------------------------------------------------
+% Customize the gutter width:
+\newcommand{\postercolumnsep}[1]%
+   {\setlength{\columnsep}{#1}}%
+%-------------------------------------------------------------------------------
+% Customize the vertical gap between the posterboxes in a column:
+\newcommand{\posterboxsep}[1]%
+   {\setlength{\underposterbox}{#1}}%
+
+
+%===============================================================================
+% Section title tweaks:
+%
+%-------------------------------------------------------------------------------
+\newcommand{\postersectioncolor}[1]%
+   {\def\postersectioncolorval{#1}}%
+%-------------------------------------------------------------------------------
+\newcommand{\postersectionsqueezebefore}[1]%
+   {\setlength\postersectionpresqueeze{#1}}%
+%-------------------------------------------------------------------------------
+\newcommand{\postersectionsqueezeafter}[1]%
+   {\setlength\postersectionpostsqueeze{#1}}%
+
+
+%===============================================================================
+% Subection title tweaks:
+%
+%-------------------------------------------------------------------------------
+\newcommand{\postersubsectioncolor}[1]%
+   {\def\postersubsectioncolorval{#1}}%
+%-------------------------------------------------------------------------------
+\newcommand{\postersubsectionsqueezebefore}[1]%
+   {\setlength\postersubsectionpresqueeze{#1}}%
+%-------------------------------------------------------------------------------
+\newcommand{\postersubsectionsqueezeafter}[1]%
+   {\setlength\postersubsectionpostsqueeze{#1}}%
+
+
+%===============================================================================
+% Misc:
+%
+%-------------------------------------------------------------------------------
+% Color of text in abstract:
+\newcommand{\posterabstractcolor}[1]%
+   {\def\posterabstractcolorval{#1}}%
+   % N.B. - The header word ``Abstract'' is governed by \postersectioncolor.
+
+
+%===============================================================================
+% Subfigure.sty support:
+%
+%-------------------------------------------------------------------------------
+% Hack to make subfigures work outside of a float environment
+\makeatletter%
+\newcommand{\@captype}{figure}%
+
+%% Provide a command to turn off subfigure labels
+\newcommand{\baresubfigures}{%
+  \renewcommand{\thesubfigure}{}%
+  \renewcommand*{\@thesubfigure}{}%
+  \renewcommand*{\@@thesubfigure}{}}%
+\makeatother%
+
+
+%===============================================================================
+% Set up some defaults:
+%
+%-------------------------------------------------------------------------------
+% N.B. -- The default paper size, scale factor, and margin are set with
+%         \setlength or \def above, since some the commands needed default
+%         values to call each other with.
+%-------------------------------------------------------------------------------
+% The following sizes are given in the typsetting scale rather than in the
+% printout scale.  Use values that give nice proportions on your screen, and
+% they will scale to nice proportions on the printout.
+\postertitlesep{1.0cm}    % Set gap under title box.
+\postercolumns{4}         % Set four-column body.
+\postercolumnsep{0.8cm}   % Set gutter width.
+% Use the multicol command \raggedcolumns if you don't want a flush bottom.
+\posterboxsep{2.0ex}      % Set space added under posterboxes
+\posterabstractcolor{red} % Use red type in the abstract.
+                          % The ``Abstract'' section title is controlled by
+                          % \postersectioncolor along with the other sections.
+%-------------------------------------------------------------------------------
+\postersectioncolor{blue}           % Set section titles to blue (except for
+                                    %    the Acknowledgments and Bibliography).
+\postersectionsqueezebefore{-0.0ex} % (don't) Reduce gap above section titles.
+\postersectionsqueezeafter{-1.0ex}  % Reduce gap below section titles.
+%-------------------------------------------------------------------------------
+\postersubsectioncolor{red}            % Set subsection titles to red.
+\postersubsectionsqueezebefore{-2.5ex} % Reduce gap above subsection titles.
+\postersubsectionsqueezeafter{-1.0ex}  % Reduce gap below subsection titles.

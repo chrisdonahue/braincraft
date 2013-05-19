@@ -1,0 +1,21 @@
+Executable = /usr/bin/java
+
+arguments = -jar Aegis_45.jar exp=2 hl log gen=1000
+
+Log = aegis.log
+
+
+
+requirements = InMastodon
+
++Group = "UNDER"
+
++Project = "AI_ROBOTICS"
+
+
++ProjectDescription = "testing neuroevolution"
+
+
+
+
+Queue 10

@@ -1,0 +1,229 @@
+\documentclass[10pt]{article}
+
+\usepackage{nnrollposter}
+\usepackage{listings}
+\usepackage{caption}
+\input{nnmacros}
+
+\hypersetup{pdftitle={Braincraft: Neuroevolution for the Masses},
+            pdfauthor={Christopher Donahue et al.},
+            pdfsubject={Computational Intelligence in Game Design},
+            pdfkeywords={Artificial Intelligence, Machine Learning, Video Games, Computer Games, Education, Research},
+            pdfpagemode=empty, % suppress thumbnail & bookmark sub-windows.
+}
+
+
+%===============================================================================
+% Definitions:
+
+%===============================================================================
+% Layout:
+\posterprintwidth{40in}        %% Match 40'' x 30'' posterboard.
+\posterprintheight{30in}       %%
+\posterprintscalefactor{1.84}  %% Squeeze everything in.
+\postercolumns{3}              %% Number of colums in the poster
+\raggedcolumns
+\definecolor{backgroundcolor}{rgb}{1.00,1.00,1.00}% White...
+\definecolor{shadecolor}{rgb}{0.90,0.80,0.90}% Blue Purple...
+% UT official color from http://www.utexas.edu/visualguidelines/
+%\definecolor{shadecolor}{rgb{0.80,0.33,0.00}% Burnt Orange
+\pagecolor{backgroundcolor}%
+
+\newcommand{\sectionline}{%
+  \nointerlineskip \vspace{\baselineskip}%
+  \hspace{\fill}\rule{0.99\linewidth}{.7pt}\hspace{\fill}%
+  \par\nointerlineskip \vspace{\baselineskip}
+}
+
+\begin{document}
+
+%===============================================================================
+\begin{postertitle}%
+  \begin{minipage}{0.1\linewidth}
+    ~%
+  \end{minipage}%
+  % 
+  \begin{minipage}{0.5\linewidth}
+    \center%
+    {\Huge Braincraft: Neuroevolution for the Masses}\\
+{\large 
+{\bf Undergraduate Researchers:} 
+Christopher Donahue,
+Prad Nelluru,
+Minwoo Bae,
+Leah Hudson,
+Taylor Rose,
+Kristi Park,
+Katie Park\\
+{\bf Research Educators:}
+Uli Grasemann,
+Igor Karpov\\
+{\bf Faculty Lead:}
+Risto Miikkulainen\\}
+    {\Large Department of Computer Science, College of Natural Sciences, The University of Texas at Austin}
+  \end{minipage}%
+  \begin{minipage}{0.1\linewidth}
+    ~%
+  \end{minipage}%
+  % 
+  \vspace*{-1.0ex}% crowd bottom of title box.
+\end{postertitle}%
+
+%===============================================================================
+\begin{posterbody}
+
+  %----------------------------------------------------------------------------
+
+  \begin{posterbox}
+    \postersection{Summary}
+    \hfill Chris Donahue
+    \begin{center}
+    \begin{minipage}{0.36\linewidth}
+      \centering
+      \includegraphics[width=1.00\linewidth]{images/braincraft/logo_stacked}      
+    \end{minipage} \hfill%
+    \begin{minipage}{0.60\linewidth}
+      {\bf Neuroevolution} is the process of iteratively constructing neural networks to find a solution network for a given problem. Braincraft is an approachable Java library for experimentation with neuroevolution techniques. Users can run an evolution experiment on the Braincraft platform with minimal knowledge of the library's inner workings. The algorithms behind Braincraft are implemented in a generic way so that they can be adapted to any problem. Users receive detailed feedback from the library and can even save, view, and test any of the produced neural networks. Braincraft grants users access to powerful neuroevolution techniques regardless of skill level.
+    \end{minipage}
+    \end{center}
+
+  \end{posterbox}
+  
+  \begin{posterbox}
+    \postersection{Using Braincraft}
+
+    \begin{center}
+    \begin{minipage}{0.65\linewidth}
+    {\Large How does one use Braincraft?}\\\\
+    {\bf Braincraft} is designed to be extremely simple to use. To run an experiment, the user tells the library the number of inputs (sensors) and outputs (actions) for the neural networks they wish to test. The library will create a population of neural networks based on these specifications. After testing a network, the user reports a fitness value back to Braincraft which it will eventually use to create the next generation of networks. Several examples come bundled with the library to demonstrate this workflow. The process is simple and intuitive, giving it an advantage over approaches taken in the past which were often too intimidating to users less educated in neuroevolution.
+    \end{minipage} \hfill%
+    \begin{minipage}{0.31\linewidth}
+      \centering
+      \includegraphics[width=0.7\linewidth]{images/braincraft/nn2_trans}
+      \captionof*{figure}{Visualizing a neural network}
+    \end{minipage}
+  \end{center}
+
+  \end{posterbox}
+
+  \begin{posterbox}
+
+    \postersection{The NEAT Algorithm}
+
+    \begin{center}
+    \begin{minipage}{0.32\linewidth}
+      \centering
+      \includegraphics[width=0.8\linewidth]{images/braincraft/speciation}
+      \captionof*{figure}{Visualizing Species development in NEAT}
+    \end{minipage} \hfill%
+    \begin{minipage}{0.65\linewidth}
+    {\Large What is NEAT?}\\\\
+{\bf NEAT} is a neuroevolution algorithm written by Ken Stanley and published in 2002. Like most neuroevolution algorithms it produces a generation of neural networks, accepts fitness values for those networks from the user and then selectively breeds them to create the next generation. However, NEAT partitions the neural networks in a given generation into different ``species'', an abstraction designed to protect new neural innovations. The genetic algorithm used to cross two neural networks in NEAT utilizes historical innovation markers created whenever a new structural mutation occurs.
+    \end{minipage}
+
+    \begin{minipage}{1.0\linewidth}
+      \centering
+      \includegraphics[width=0.87\linewidth]{images/braincraft/neatcross}
+      \captionof*{figure}{Crossing two neural networks with NEAT}
+    \end{minipage} \hfill%
+
+\sectionline
+
+    \end{center}
+
+    {\Large How does it apply to Braincraft?}\\\\
+{\bf Braincraft} owes a great deal to the NEAT algorithm. The platform began its life as a Java implementation of NEAT but then itself evolved. Now, the user can use NEAT or choose to write their own method of population control and test it on any existing Braincraft experiment. This allows for powerful codevelopment of a neuroevolution experiment on both the frontend and backend. Braincraft continues to utilize NEAT-style innovation markers to cross networks.
+  \end{posterbox}
+
+  \begin{posterbox}
+
+    \postersection{Aegis}
+    \hfill Prad Nelluru, Chris Donahue
+
+    {\Large What is Aegis?}\\\\
+    {\bf Aegis} is a simple foraging experiment written on the Braincraft platform and designed to be a teaching tool for introducing neuroevolution. Aegis was given to the students in the Spring 2012 {\em Computational Intelligence in Game Design} research stream. Students were asked to extend the experiment by adding additional challenges for the evolving foragers.\\
+
+    \begin{minipage}{1.0\linewidth}
+      \centering
+      \includegraphics[height=0.93\linewidth]{images/braincraft/aegis} \hfill%
+      \captionof*{figure}{Four different experiments running in Aegis. From top-left and clockwise: default foraging experiment, lava and simultaneous foragers (Kristi Park, Katie Park), adding walls (Kristi Park, Katie Park), different types of food (Leah Hudson, Taylor Rose)}
+    \end{minipage} \hfill%
+
+    \sectionline
+The core foraging experiment of Aegis was run on the {\em UTCS Mastodon High Throughput Computing Cluster}. The results (charted below) suggest that Braincraft running the NEAT algorithm can evolve foraging creatures that approach optimality even in a pseudorandom, noisy environment.
+    \begin{minipage}{1.0\linewidth}
+      \centering
+      \includegraphics[height=0.68\linewidth]{images/braincraft/graphlabeled}
+    \end{minipage} \hfill%
+  \end{posterbox}
+
+  \begin{posterbox}
+    \centering
+    \includegraphics[height=0.14\linewidth]{images/braincraft/logo_long}
+  \end{posterbox}
+
+  \begin{posterbox}
+    \postersection{Network Visualizer}
+    \hfill Chris Donahue
+
+    {\bf Braincraft} comes bundled with a visualizer for the neural networks it produces. The tool allows the user to see, test and edit the networks that the library produced. An edited network can then be used by the library as a seed structure.\\
+
+    \begin{minipage}{1.0\linewidth}
+      \centering
+      \includegraphics[height=0.49\linewidth]{images/braincraft/viz_test}
+      \includegraphics[height=0.49\linewidth]{images/braincraft/viz_viz}
+      \includegraphics[height=0.49\linewidth]{images/braincraft/viz_editing}
+      \captionof*{figure}{Testing, visualizing and editing a network that approximates a two-bit AND gate}
+    \end{minipage} \hfill%
+  \end{posterbox}
+
+  \begin{posterbox}
+  \postersection{Potential Applications}
+
+    \begin{center}
+    \begin{minipage}{0.80\linewidth}
+    {\bf Braincraft} is a flexible library with a wide variety of potential uses. Because it is written in Java, Braincraft lends itself nicely to the development of software for the Android operating system. It is also being employed for experimentation with signal processing. A plugin is currently being developed to create audio filters and synthesizers using Braincraft and the Steinberg VST format.
+    \end{minipage} \hfill%
+    \begin{minipage}{0.19\linewidth}
+      \centering
+      \includegraphics[width=0.75\linewidth]{images/android}
+    \end{minipage} \hfill
+  \end{center}
+  \end{posterbox}
+
+  \begin{posterbox}
+    \postersection{Related Publications}
+    {\small D. E. Goldberg, and J. Richardson (1987). Genetic Algorithms With Sharing for Multimodal Function Optimization. {\it Proceedings of the Second International Conference on Genetic Algorithms}, 148-154, 1987.}\\
+    {\small F. Gruau (1993). Genetic Synthesis of Modular Nueral Networks. {\it Proceedings of the Fifth International Conference on Genetic Algorithms}, 318-325, 1993.}\\
+    {\small K. O. Stanley, and R. Miikkulainen (2002). Evolving Neural Networks Through Augmenting Topologies. {\it Evolutionary Computation}, 10(2):99-127, 2002.}\\
+    %{\small K. O. Stanley, and R. Miikkulainen (2004). Competitive Coevolution Through Evolutionary Complexificiation. {\it Journal of Artificial Intelligence Research}, 21:63-100, 2004.}\\
+    {\small K. O. Stanley, B. D. Bryant, and R. Miikkulainen (2005). Real-Time Neuroevolution in the NERO Video Game. {\it IEEE Transactions on Evolutionary Computation}, 9(6):653-668, 2005.}
+
+    %{\small K. O. Stanley, B. D. Bryant, and R. Miikkulainen (2005). Evolving Neural Network Agents in the NERO Video Game. {\it IEEE 2005 Symposium on Computational Intelligence and Games}, 2005.}
+  \end{posterbox}
+
+  \begin{posterbox}
+    \postersection{Acknowledgements}
+
+    \begin{minipage}{0.60\linewidth}
+      This research is supported in part by the Microsoft summer research fellowship and by the College of Natural Sciences at the University of Texas at Austin. Thanks to Igor Karpov for the LaTeX poster template.
+    \end{minipage} \hfill%
+    \begin{minipage}{0.35\linewidth}
+      \includegraphics[width=0.95\linewidth]{images/microsoft}
+    \end{minipage}
+    \newline 
+    \newline
+    \newline 
+    \begin{minipage}{1.0\linewidth}
+      \centering
+      \includegraphics[height=0.13\linewidth]{images/cns}
+    \end{minipage}\hfill%
+    
+  \end{posterbox}
+
+  \vspace{-1.0ex}%
+  \hfill{\footnotesize\color{blue}\textbf{Updated \today}}%
+
+\end{posterbody}
+
+\end{document}

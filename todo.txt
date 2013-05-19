@@ -1,0 +1,33 @@
+LONG TERM LIBRARY IDEAS:
+  paramCheck()
+  create jython testing interface for running experiments in python
+  create coherent package structure
+	change weight mutation
+	Multithreading/rtNEAT
+	Talk to neurobiologist about how we learn over the course of our lifetime.
+	^ + alter weights/structure within the span of evaluation? Evolve phenotype then adapt it
+	Alter weights in response to positive or negative events
+	Earn right to reproduce in lifetime?
+	leaky neural net evaluation
+  BIAS nodes
+
+FORKPOPULATION:
+	implement DNA(DNA) constructor
+	finish repopulate method
+
+TRIBEPOPULATION:
+  Merge getNewTribeID() and registerTribe() (as well as gene/node equivalents in population)
+	Kill stagnant tribes
+	Champion of each tribes with size >= 5 copied to next gen
+
+VISUALIZER:
+	Rearrange GUI
+	Save nets as files
+	Info boxes while Crafting
+	Mutations/Children lists
+
+EXPERIMENTS:
+	Cryptography (Breaking bad code?)
+	Music chord progressions with different fitness (like database or user evaluated)
+	Tempo detector from raw audio samples
+	Music Visualizer with grid of squares controlled by real time-evaluated brains. User taps to add or maybe subtract fitness. Brains can be saved and swapped out. Weights can be modified at visualization time. Maybe the brain can even take over screen real estate as it gets better. Endless possibilities!

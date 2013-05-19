@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 25
+/svn/!svn/ver/44/trunk/py
+END
+champtxt
+K 25
+svn:wc:ra_dav:version-url
+V 34
+/svn/!svn/ver/31/trunk/py/champtxt
+END
+stats.txt
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/28/trunk/py/stats.txt
+END
+xornetwork.txt
+K 25
+svn:wc:ra_dav:version-url
+V 40
+/svn/!svn/ver/44/trunk/py/xornetwork.txt
+END
+example.py
+K 25
+svn:wc:ra_dav:version-url
+V 36
+/svn/!svn/ver/17/trunk/py/example.py
+END
+visualizelog.py
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/34/trunk/py/visualizelog.py
+END
